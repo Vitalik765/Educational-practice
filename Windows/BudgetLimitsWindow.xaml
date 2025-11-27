@@ -1,0 +1,124 @@
+<Window x:Class="BudgetApp.Windows.BudgetLimitsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Лимиты бюджета" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Лимиты бюджета" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,20,0"/>
+            <Button Content="+ Добавить лимит" Click="AddLimit_Click" 
+                    Background="#4ECDC4" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+
+        <DataGrid x:Name="LimitsGrid" Grid.Row="1" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" Width="*"/>
+                <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="120">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Income">
+                                    <Setter Property="Foreground" Value="#4ECDC4"/>
+                                    <Setter Property="Text" Value="Доход"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="Expense">
+                                    <Setter Property="Foreground" Value="#FF6B6B"/>
+                                    <Setter Property="Text" Value="Расход"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Лимит" Binding="{Binding Limit, StringFormat='{}{0:N2} ₽'}" Width="150"/>
+                <DataGridTextColumn Header="Период" Binding="{Binding Period}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Period}" Value="Month">
+                                    <Setter Property="Text" Value="Месяц"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Period}" Value="Week">
+                                    <Setter Property="Text" Value="Неделя"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Period}" Value="Year">
+                                    <Setter Property="Text" Value="Год"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Использовано" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Used, StringFormat='{}{0:N2} ₽'}" 
+                                       FontWeight="Bold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsOverLimit}" Value="True">
+                                                <Setter Property="Foreground" Value="#FF6B6B"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsOverLimit}" Value="False">
+                                                <Setter Property="Foreground" Value="#4ECDC4"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Остаток" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Remaining, StringFormat='{}{0:N2} ₽'}" 
+                                       FontWeight="Bold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsOverLimit}" Value="True">
+                                                <Setter Property="Foreground" Value="#FF6B6B"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsOverLimit}" Value="False">
+                                                <Setter Property="Foreground" Value="#4ECDC4"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Действия" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="✏️" Click="EditLimit_Click" 
+                                        Tag="{Binding}" Background="Transparent" BorderThickness="0" Padding="5"/>
+                                <Button Content="🗑️" Click="DeleteLimit_Click" 
+                                        Tag="{Binding}" Background="Transparent" BorderThickness="0" Padding="5"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" Content="Закрыть" Click="Close_Click" 
+                HorizontalAlignment="Right" Width="100" Background="#95A5A6" Foreground="White"/>
+    </Grid>
+</Window>
+

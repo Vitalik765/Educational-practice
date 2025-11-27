@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="BudgetAppDB\**\*.cs" />
+    <Page Remove="BudgetAppDB\**\*.xaml" />
+    <Resource Remove="BudgetAppDB\**\*" />
+    <ApplicationDefinition Remove="BudgetAppDB\**\*.xaml" />
+    <Compile Remove="BudgetApp.Cloud\**\*.cs" />
+    <Page Remove="BudgetApp.Cloud\**\*.xaml" />
+    <Resource Remove="BudgetApp.Cloud\**\*" />
+    <ApplicationDefinition Remove="BudgetApp.Cloud\**\*.xaml" />
+  </ItemGroup>
+
+</Project>
+
